@@ -1,12 +1,12 @@
 <template>
   <div class="recommend">
-    <scroll class="recommend-content" :data="discList">
+    <scroll ref="scroll" class="recommend-content" :data="discList">
       <div class="">
         <div  v-if="recommends.length" class="slider-wrapper">
           <slider>
             <div v-for="item in recommends">
               <a :href="item.linkUrl">
-                <img class="needsclick"  :src="item.picUrl" alt="">
+                <img @load="loadImage" class="needsclick"  :src="item.picUrl" alt="">
               </a>
             </div>
           </slider>
@@ -45,6 +45,9 @@ import Slider from '@/base/slider/slider'
       }
     },
     created(){
+      // setTimeout(()=>{
+      //   this._getRecommend()
+      // },1000)
       this._getRecommend()
       this._getDiscList()
     },
@@ -64,6 +67,13 @@ import Slider from '@/base/slider/slider'
             // console.log('kk');
           }
         })
+      },
+      loadImage(){
+        if(!this.checkLoaded){
+          this.$refs.scroll.refresh()
+          this.checkLoaded = true
+        }
+
       }
     }
   }
